@@ -269,7 +269,7 @@ namespace MineGame
                 else if (mine is AdvancedMine)
                 {
                     AdvancedMine advmine = mine as AdvancedMine;
-                    advmine.AdvancedUpdate(mine, player.GetPosX(), player.GetPosY(), difficulty);
+                    advmine.AdvancedUpdate(player.GetPosX(), player.GetPosY(), difficulty);
                 }
                 else if (mine is BounceMine)
                 {
