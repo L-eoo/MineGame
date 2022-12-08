@@ -1,0 +1,3 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/leo.magnusson1/source/repos/MineGame/MineGame/Content/bounceMine.png","C:/Users/leo.magnusson1/source/repos/MineGame/MineGame/Content/bin/DesktopGL/bounceMine.xnb","TextureProcessor","Texture2DContent",225,4181,0,418099
+"C:/Users/leo.magnusson1/source/repos/MineGame/MineGame/Content/font.spritefont","C:/Users/leo.magnusson1/source/repos/MineGame/MineGame/Content/bin/DesktopGL/font.xnb","FontDescriptionProcessor","SpriteFontContent",2009,70673,0,3080395
