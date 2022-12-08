@@ -17,14 +17,10 @@ namespace MineGame
         }
         public bool MouseOnButton(MouseState MouseInput)
         {
-            if (MouseInput.X < Position.X + Texture.Width &&
+            return (MouseInput.X < Position.X + Texture.Width &&
                 MouseInput.X > Position.X &&
                 MouseInput.Y < Position.Y + Texture.Height &&
-                MouseInput.Y > Position.Y)
-            {
-                return true;
-            }
-            return false;
+                MouseInput.Y > Position.Y); //Kollar om musens position är på knappen
         }
 
         public void Draw(SpriteBatch spriteBatch)

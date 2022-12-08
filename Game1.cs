@@ -57,7 +57,7 @@ namespace MineGame
         private float hardHighscore;
         private double rotation;
 
-        private MovingObjects player;
+        private Player player;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -113,7 +113,7 @@ namespace MineGame
             normalTexture = Content.Load<Texture2D>("Normal");
             hardTexture = Content.Load<Texture2D>("Hard");
 
-            player = new MovingObjects(planeTexture, startPos);
+            player = new Player(planeTexture, startPos);
             buttonList.Add(new Button(new Vector2(50, 150), easyTexture, 1));
             buttonList.Add(new Button(new Vector2(50, 200), normalTexture, 2));
             buttonList.Add(new Button(new Vector2(50, 250), hardTexture, 3));
@@ -121,7 +121,7 @@ namespace MineGame
         // -----------------------------UPDATE------------------------------
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit(); //Stänger av spelet när man trycker på Escape
 
             KeyboardState state = Keyboard.GetState();
             if (!isPlaying)
@@ -170,7 +170,7 @@ namespace MineGame
             Rectangle playerBox = new((int)player.GetPosX(), (int)player.GetPosY(), player.Texture.Width, player.Texture.Height);
             Rectangle coinpos = new ((int)coinPos.X, (int)coinPos.Y, coinTexture.Width, coinTexture.Height);
             var kollision = Intersection(playerBox, coinpos);
-            if (kollision.Width > 0 && kollision.Height > 0)
+            if (kollision.Width > 0 && kollision.Height > 0) //Kollar om spelaren kolliderar med pengen
             {
                 Rectangle r1 = Normalize(playerBox, kollision);
                 Rectangle r2 = Normalize(coinpos, kollision);
@@ -180,7 +180,7 @@ namespace MineGame
             // ----------------CREATE MINES & BLOCK
             if (regMineTimer <= 0)
             {
-                regMineTimer = 180 / difficulty - score / 10;
+                regMineTimer = 180 / difficulty - score / 10; //bestämmer hur lång tid det ska ta innan nästa mina skapas baserat på svårighetsgraden och spelarens poäng
 
                 int startPosX = rnd.Next(gameScreenWidth - regMineTexture.Width);
                 int startPosY = rnd.Next(gameScreenHeight - regMineTexture.Height);
@@ -191,14 +191,14 @@ namespace MineGame
             }
             if (advMineTimer <= 0)
             {
-                advMineTimer = 1200 / difficulty - score / 10;
+                advMineTimer = 1200 / difficulty - score / 10; //bestämmer hur lång tid det ska ta innan nästa mina skapas baserat på svårighetsgraden och spelarens poäng
 
                 int startPosX = rnd.Next(gameScreenWidth - advMineTexture.Width);
                 int startPosY = rnd.Next(gameScreenHeight - blockTexture.Height);
                 float rotation = rnd.Next(4) * 90;
                 if (score >= 4) 
                 { 
-                    switch (rotation) // Spawns adanced 
+                    switch (rotation) // Skapar avancerad mina med hastighet åt rätt håll
                     {
                         case 0:
                             mines.Add(new AdvancedMine(advMineTexture, new Vector2(startPosX, -32), rotation));
@@ -234,7 +234,7 @@ namespace MineGame
             }
             if (statMineTimer <= 0)
             {
-                statMineTimer = 360 / difficulty - score / 10;
+                statMineTimer = 360 / difficulty - score / 10; //bestämmer hur lång tid det ska ta innan nästa mina skapas baserat på svårighetsgraden och spelarens poäng
 
                 int startPosX = rnd.Next(gameScreenWidth - statMineTexture.Width);
                 int startPosY = rnd.Next(gameScreenHeight - statMineTexture.Height);
@@ -246,7 +246,7 @@ namespace MineGame
             {
                 if (mine is RegularMine)
                 {
-                    mine.Update(new Vector2(0, 1) * difficulty / 2 + new Vector2(0, 0.5f));
+                    mine.Update(new Vector2(0, 1) * difficulty / 2 + new Vector2(0, 0.5f)); //Rör minan olika fort beroende på svårighetsgraden
                 }
                 else if (mine is UpMine)
                 {
@@ -281,7 +281,7 @@ namespace MineGame
             // ----------------REMOVE MINES & BLOCK
             for (int i = 0; i < mines.Count; i++)
             {
-                if (mines[i].GetPosY() > gameScreenHeight + 32 || mines[i].GetPosX() > gameScreenWidth + 32 || mines[i].GetPosX() < -32 || mines[i].GetPosY() < -32)
+                if (mines[i].GetPosY() > gameScreenHeight + 32 || mines[i].GetPosX() > gameScreenWidth + 32 || mines[i].GetPosX() < -32 || mines[i].GetPosY() < -32) //Tar bort minor som är långt utanför spelområdet
                 {
                     mines.RemoveAt(i);
                 }
@@ -300,11 +300,11 @@ namespace MineGame
             // ----------------MINES COLLISION
             foreach (MovingObject mine in mines)
             {
-                if (Vector2.Distance(new Vector2(player.GetPosX(), player.GetPosY()), new Vector2(mine.GetPosX(), mine.GetPosY())) > 100) continue;
+                if (Vector2.Distance(new Vector2(player.GetPosX(), player.GetPosY()), new Vector2(mine.GetPosX(), mine.GetPosY())) > 100) continue; //skippar kollisionshantering med minor som är långt ifrån spelaren
                 if (mine is StatMine)
                 {
                     StatMine statmine = mine as StatMine;
-                    if (statmine.Timer >= 0) continue;
+                    if (statmine.Timer >= 0) continue; //skippar statiska minor med en timer över 0;
                 }
 
                 Rectangle minepos = new ((int)mine.GetPosX(), (int)mine.GetPosY(), mine.Texture.Width, mine.Texture.Height);
@@ -335,36 +335,40 @@ namespace MineGame
                     {
                         blockpos = new ((int)block.GetPosX() + block.Texture.Width, (int)block.GetPosY(), block.Texture.Width, block.Texture.Height);
                         kollision = Intersection(playerBox, blockpos);
+                        //kollar om spelarens position är höger om blocket
                         if (kollision.Width > 0 && kollision.Height > 0)
                         {
-                            player.Update(new Vector2(3 - velocityPlayer.X, 0));
+                            player.Update(new Vector2(3 - velocityPlayer.X, 0)); //flyttar spelaren åt höger
                         }
                     }
                     if (playerBox.Right > kollision.Left)
                     {
                         blockpos = new Rectangle((int)block.GetPosX() - block.Texture.Width, (int)block.GetPosY(), block.Texture.Width, block.Texture.Height);
                         kollision = Intersection(playerBox, blockpos);
+                        //kollar om spelarens position är vänster om blocket
                         if (kollision.Width > 0 && kollision.Height > 0)
                         {
-                            player.Update(new Vector2(-3 - velocityPlayer.X, 0)); ;
+                            player.Update(new Vector2(-3 - velocityPlayer.X, 0)); //flyttar spelaren åt vänster
                         }
                     }
                     if (playerBox.Top > kollision.Bottom)
                     {
                         blockpos = new Rectangle((int)block.GetPosX(), (int)block.GetPosY() + block.Texture.Height, block.Texture.Width, block.Texture.Height);
                         kollision = Intersection(playerBox, blockpos);
+                        //kollar om spelarens position är under blocket
                         if (kollision.Width > 0 && kollision.Height > 0)
                         {
-                            player.Update(new Vector2(0, 3 - velocityPlayer.Y));
+                            player.Update(new Vector2(0, 3 - velocityPlayer.Y)); //flyttar spelaren neråt
                         }
                     }
                     if (playerBox.Bottom > kollision.Top)
                     {
                         blockpos = new Rectangle((int)block.GetPosX(), (int)block.GetPosY() - block.Texture.Height, block.Texture.Width, block.Texture.Height);
                         kollision = Intersection(playerBox, blockpos);
+                        //kollar om spelarens position är över blocket
                         if (kollision.Width > 0 && kollision.Height > 0)
                         {
-                            player.Update(new Vector2(0, -3 - velocityPlayer.Y));
+                            player.Update(new Vector2(0, -3 - velocityPlayer.Y)); //flyttar spelaren uppåt
                         }
                     }
                 }
@@ -395,7 +399,8 @@ namespace MineGame
             spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
 
             foreach (BigBlock block in blockList) block.Draw(spriteBatch, Color.White);
-            spriteBatch.Draw(planeTexture, new Rectangle((int)player.GetPosX()+planeTexture.Width/2, (int)player.GetPosY()+planeTexture.Width/2, planeTexture.Width, planeTexture.Height), null, Color.White, (float)rotation, new Vector2(planeTexture.Width/2, planeTexture.Height/2), SpriteEffects.None, 0f);
+            spriteBatch.Draw(planeTexture, new Rectangle((int)player.GetPosX() + planeTexture.Width / 2, (int)player.GetPosY() + planeTexture.Width / 2, planeTexture.Width, planeTexture.Height), null, Color.White, (float)rotation, new Vector2(planeTexture.Width / 2, planeTexture.Height / 2), SpriteEffects.None, 0f);
+            //Ritar planet med rotation
             foreach (MovingObject mine in mines)
             { 
                 if (mine is StatMine)
@@ -429,7 +434,7 @@ namespace MineGame
             mines.Clear();
             blockList.Clear();
             player.Position = startPos;
-            coinPos = new Vector2(rnd.Next(gameScreenWidth - coinTexture.Width), rnd.Next(gameScreenHeight - coinTexture.Height));
+            Newcoin();
             score = 0;
             regMineTimer = 1;
             advMineTimer = 1;
@@ -440,77 +445,27 @@ namespace MineGame
         void Newcoin()
         {
             score++;
-            int startPosX = rnd.Next(gameScreenWidth - bounceTexture.Width);
-            int startPosY = rnd.Next(gameScreenHeight - bounceTexture.Height);
-            if (score % 25 == 0 && rnd.Next(0, 2) == 0)
+            if (score % 25 == 0)
             {
-                if (rnd.Next(0, 2) == 0)
+                float X = 0;
+                while (X == 0)
                 {
-                    float X = 0;
-                    while (X == 0)
-                    {
-                        X = (float)rnd.NextDouble() - 0.5f;
-                    }
-                    float Y = 0;
-                    while (Y == 0)
-                    {
-                        Y = (float)rnd.NextDouble() - 0.5f;
-                    }
-                    mines.Add(new BounceMine(bounceTexture, new Vector2(startPosX, gameScreenHeight-bounceTexture.Height), Vector2.Normalize(new Vector2(X, Y)) * (difficulty + 1)));
+                    X = (float)rnd.NextDouble() - 0.5f; //Bestämmer X-värdet för den studsande minans Velocity
                 }
-                else
+                float Y = 0;
+                while (Y == 0)
                 {
-                    float X = 0;
-                    while (X == 0)
-                    {
-                        X = (float)rnd.NextDouble() - 0.5f;
-                    }
-                    float Y = 0;
-                    while (Y == 0)
-                    {
-                        Y = (float)rnd.NextDouble() - 0.5f;
-                    }
-                    mines.Add(new BounceMine(bounceTexture, new Vector2(startPosX, 0), Vector2.Normalize(new Vector2(X, Y)) * (difficulty + 1)));
+                    Y = (float)rnd.NextDouble() - 0.5f; //Bestämmer Y-värdet för den studsande minans Velocity
                 }
+                mines.Add(new BounceMine(bounceTexture, new Vector2(0, gameScreenHeight - bounceTexture.Height), Vector2.Normalize(new Vector2(X, Y)) * (difficulty + 1))); //Skapar minan längst ner till vänster med Velocity en normalizerd vektor av X och Y som multipliceras med svårighetsgraden 
             }
-            else if (score % 25 == 0)
-            {
-                if (rnd.Next(0, 2) == 0)
-                {
-                    float X = 0;
-                    while (X == 0)
-                    {
-                        X = (float)rnd.NextDouble() - 0.5f;
-                    }
-                    float Y = 0;
-                    while (Y == 0)
-                    {
-                        Y = (float)rnd.NextDouble() - 0.5f;
-                    }
-                    mines.Add(new BounceMine(bounceTexture, new Vector2(gameScreenWidth - bounceTexture.Width, startPosY), Vector2.Normalize(new Vector2(X, Y)) * (difficulty + 1)));
-                }
-                else 
-                {
-                    float X = 0;
-                    while (X == 0)
-                    {
-                        X = (float)rnd.NextDouble() - 0.5f;
-                    }
-                    float Y = 0;
-                    while (Y == 0)
-                    {
-                        Y = (float)rnd.NextDouble() - 0.5f;
-                    }
-                    mines.Add(new BounceMine(bounceTexture, new Vector2(0, startPosY), Vector2.Normalize(new Vector2(X, Y)) * (difficulty + 1)));
-                }
-            }
-            startPosX = rnd.Next(gameScreenWidth - coinTexture.Width);
-            startPosY = rnd.Next(gameScreenHeight - coinTexture.Height);
-            coinPos = new Vector2(startPosX, startPosY);
+            int startPosX = rnd.Next(gameScreenWidth - coinTexture.Width);
+            int startPosY = rnd.Next(gameScreenHeight - coinTexture.Height);
+            coinPos = new Vector2(startPosX, startPosY); //ändrar pengens position till en slumpmässig plats på skärmen
         }
 
         // ----------------------------COLLISION----------------------------
-        public static Rectangle Intersection(Rectangle r1, Rectangle r2)
+        public static Rectangle Intersection(Rectangle r1, Rectangle r2) //Jag har ingen aning om vad som pågår
         {
             int x1 = Math.Max(r1.Left, r2.Left);
             int y1 = Math.Max(r1.Top, r2.Top);
@@ -524,12 +479,12 @@ namespace MineGame
             return Rectangle.Empty;
         }
 
-        public static Rectangle Normalize(Rectangle reference, Rectangle overlap)
+        public static Rectangle Normalize(Rectangle reference, Rectangle overlap) //Jag har ingen aning om vad som pågår
         {
             return new Rectangle(overlap.X - reference.X, overlap.Y - reference.Y, overlap.Width, overlap.Height);
         }
 
-        public static bool TestCollision(Texture2D t1, Rectangle r1, Texture2D t2, Rectangle r2)
+        public static bool TestCollision(Texture2D t1, Rectangle r1, Texture2D t2, Rectangle r2) //Jag har ingen aning om vad som pågår
         {
             int pixelCount = r1.Width * r1.Height;
             uint[] texture1Pixels = new uint[pixelCount];

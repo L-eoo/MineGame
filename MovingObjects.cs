@@ -38,9 +38,9 @@ namespace MineGame
         }
     }
 
-    class MovingObjects : MovingObject
+    class Player : MovingObject
     {
-        public MovingObjects(Texture2D texture, Vector2 position) : base(position, texture)
+        public Player(Texture2D texture, Vector2 position) : base(position, texture)
         {
 
         }
@@ -56,11 +56,11 @@ namespace MineGame
             if (velocity != Vector2.Zero)
             {
                 velocity.Normalize();
-                rotation = Math.Atan2(velocity.Y, velocity.X) + Math.PI / 2;
+                rotation = Math.Atan2(velocity.Y, velocity.X) + Math.PI / 2; //beräknar spelarens rotation baserat på riktiningen spelaren rör sig
             }
             velocity *= 2;
             Update(velocity);
-            Position = new Vector2(Math.Clamp(Position.X, 0, 800 - Texture.Width), Math.Clamp(Position.Y, 0, 480 - Texture.Height));
+            Position = new Vector2(Math.Clamp(Position.X, 0, 800 - Texture.Width), Math.Clamp(Position.Y, 0, 480 - Texture.Height)); //Begränsar spelarens position till spelplanen
             return rotation;
         }
     }
@@ -73,13 +73,14 @@ namespace MineGame
         }
         public void AdvancedUpdate(MovingObject mine, float playerX, float playerY, float difficulty)
         {
-            if (mine.AdvRotate == 180 || mine.AdvRotate == 0)
+            if (mine.AdvRotate == 180 || mine.AdvRotate == 0)//kollar om minan åker horizontellt
             {
                 float rotation = 1;
                 if (mine.AdvRotate == 180) rotation = -1;
                 if (mine.GetPosX() > playerX) mine.Update(new Vector2(-0.75f, rotation * difficulty / 2 + 0.5f * rotation));
                 else if (mine.GetPosX() < playerX) mine.Update(new Vector2(0.75f, rotation * difficulty / 2 + 0.5f * rotation));
                 else mine.Update(new Vector2(0, rotation * difficulty / 2 + 0.5f * rotation));
+                //Rör minan mot spelaren baserat på svårighetsgrad och minans roatation
             }
             else
             {
@@ -88,6 +89,7 @@ namespace MineGame
                 if (mine.GetPosY() > playerY) mine.Update(new Vector2(rotation * difficulty / 2 + 0.5f * rotation, -0.75f));
                 else if (mine.GetPosY() < playerY) mine.Update(new Vector2(rotation * difficulty / 2 + 0.5f * rotation, 0.75f));
                 else mine.Update(new Vector2(rotation * difficulty / 2 + 0.5f * rotation, 0));
+                //Rör minan mot spelaren baserat på svårighetsgrad och minans roatation
             }
         }
     }
