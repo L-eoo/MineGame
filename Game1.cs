@@ -263,7 +263,7 @@ namespace MineGame
                 else if (mine is StatMine)
                 {
                     StatMine statmine = mine as StatMine;
-                    statmine.Timer -= 1;
+                    statmine.Timer--;
 
                 }
                 else if (mine is AdvancedMine)
