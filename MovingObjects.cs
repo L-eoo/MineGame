@@ -65,17 +65,17 @@ namespace MineGame
 
     class AdvancedMine : MovingObject
     {
-        public float AdvRotate { get; set; }
+        public float AdvRotation { get; set; }
         public AdvancedMine(Texture2D texture, Vector2 position, float rotation) : base(position, texture)
         {
-            AdvRotate = rotation;
+            AdvRotation = rotation;
         }
         public void AdvancedUpdate(float playerX, float playerY, float difficulty)
         {
-            if (AdvRotate == 180 || AdvRotate == 0)//kollar om minan åker horizontellt
+            if (AdvRotation == 180 || AdvRotation == 0)//kollar om minan åker horizontellt
             {
                 float rotation = 1;
-                if (AdvRotate == 180) rotation = -1;
+                if (AdvRotation == 180) rotation = -1;
                 if (GetPosX() > playerX) Update(new Vector2(-0.75f, rotation * difficulty / 2 + 0.5f * rotation));
                 else if (GetPosX() < playerX) Update(new Vector2(0.75f, rotation * difficulty / 2 + 0.5f * rotation));
                 else Update(new Vector2(0, rotation * difficulty / 2 + 0.5f * rotation));
@@ -84,7 +84,7 @@ namespace MineGame
             else
             {
                 float rotation = 1;
-                if (AdvRotate == 90) rotation = -1;
+                if (AdvRotation == 90) rotation = -1;
                 if (GetPosY() > playerY) Update(new Vector2(rotation * difficulty / 2 + 0.5f * rotation, -0.75f));
                 else if (GetPosY() < playerY) Update(new Vector2(rotation * difficulty / 2 + 0.5f * rotation, 0.75f));
                 else Update(new Vector2(rotation * difficulty / 2 + 0.5f * rotation, 0));
