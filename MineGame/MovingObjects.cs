@@ -41,7 +41,7 @@ namespace MineGame
         /// <summary>
         /// Uppdaterar minans position
         /// </summary>
-        /// <param name="velocity"></param>
+        /// <param name="velocity">Objektets rörelse</param>
         public void Update(Vector2 velocity)
         {
             Position += velocity;
@@ -49,8 +49,8 @@ namespace MineGame
         /// <summary>
         /// Ritar ut minan
         /// </summary>
-        /// <param name="spriteBatch"></param>
-        /// <param name="color"></param>
+        /// <param name="spriteBatch">Spritebatchen</param>
+        /// <param name="color">Färg för objektet</param>
         public void Draw(SpriteBatch spriteBatch, Color color)
         {
             spriteBatch.Draw(Texture, Position, color);
@@ -80,8 +80,8 @@ namespace MineGame
         /// <summary>
         /// Konstruktor för spelaren som ärver moving object
         /// </summary>
-        /// <param name="texture"></param>
-        /// <param name="position"></param>
+        /// <param name="texture">Spelarens textur</param>
+        /// <param name="position">Spelarens position</param>
         public Player(Texture2D texture, Vector2 position) : base(position, texture)
         {
 
@@ -90,7 +90,7 @@ namespace MineGame
         /// <summary>
         /// Med hjälp av Keyboardstate skapas en vektor för spelarens rörelse
         /// </summary>
-        /// <param name="keyboard"></param>
+        /// <param name="keyboard">Info om knapparna på tangentbordet</param>
         /// <returns>Returnerar en uppdaterad position</returns>
         public double PlayerUpdate(KeyboardState keyboard)
         {
@@ -123,9 +123,9 @@ namespace MineGame
         /// <summary>
         /// Konstruktor för Avancerade Minan
         /// </summary>
-        /// <param name="texture"></param>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
+        /// <param name="texture">Minans textur</param>
+        /// <param name="position">Minans position</param>
+        /// <param name="rotation">Minans rotation</param>
         public AdvancedMine(Texture2D texture, Vector2 position, float rotation) : base(position, texture)
         {
             AdvRotation = rotation;
@@ -133,17 +133,16 @@ namespace MineGame
         /// <summary>
         /// Uppdaterar avancerade minans position
         /// </summary>
-        /// <param name="playerX"></param>
-        /// <param name="playerY"></param>
-        /// <param name="difficulty"></param>
-        public void AdvancedUpdate(float playerX, float playerY, float difficulty)
+        /// <param name="playerpos">Spelarens position</param>
+        /// <param name="difficulty">Spelets svårighetsgrad</param>
+        public void AdvancedUpdate(Vector2 playerpos, float difficulty)
         {
             if (AdvRotation == 180 || AdvRotation == 0)//kollar om minan åker horizontellt
             {
                 float rotation = 1;
                 if (AdvRotation == 180) rotation = -1;
-                if (GetPosX() > playerX) Update(new Vector2(-0.75f, rotation * difficulty / 2 + 0.5f * rotation));
-                else if (GetPosX() < playerX) Update(new Vector2(0.75f, rotation * difficulty / 2 + 0.5f * rotation));
+                if (GetPosX() > playerpos.X) Update(new Vector2(-0.75f, rotation * difficulty / 2 + 0.5f * rotation));
+                else if (GetPosX() < playerpos.X) Update(new Vector2(0.75f, rotation * difficulty / 2 + 0.5f * rotation));
                 else Update(new Vector2(0, rotation * difficulty / 2 + 0.5f * rotation));
                 //Rör minan mot spelaren baserat på svårighetsgrad och minans roatation
             }
@@ -151,8 +150,8 @@ namespace MineGame
             {
                 float rotation = 1;
                 if (AdvRotation == 90) rotation = -1;
-                if (GetPosY() > playerY) Update(new Vector2(rotation * difficulty / 2 + 0.5f * rotation, -0.75f));
-                else if (GetPosY() < playerY) Update(new Vector2(rotation * difficulty / 2 + 0.5f * rotation, 0.75f));
+                if (GetPosY() > playerpos.Y) Update(new Vector2(rotation * difficulty / 2 + 0.5f * rotation, -0.75f));
+                else if (GetPosY() < playerpos.Y) Update(new Vector2(rotation * difficulty / 2 + 0.5f * rotation, 0.75f));
                 else Update(new Vector2(rotation * difficulty / 2 + 0.5f * rotation, 0));
                 //Rör minan mot spelaren baserat på svårighetsgrad och minans roatation
             }
@@ -166,8 +165,8 @@ namespace MineGame
         /// <summary>
         /// Konstruktor för den vanliga minan
         /// </summary>
-        /// <param name="texture"></param>
-        /// <param name="position"></param>
+        /// <param name="texture">Minans textur</param>
+        /// <param name="position">Minans position</param>
         public RegularMine(Texture2D texture, Vector2 position) : base(position, texture)
         {
 
@@ -185,9 +184,9 @@ namespace MineGame
         /// <summary>
         /// Konstruktor för statisk mina
         /// </summary>
-        /// <param name="texture"></param>
-        /// <param name="position"></param>
-        /// <param name="timer"></param>
+        /// <param name="texture">Minans textur</param>
+        /// <param name="position">Minans position</param>
+        /// <param name="timer">Statiska minans timer</param>
         public StatMine(Texture2D texture, Vector2 position,int timer) : base(position, texture)
         {
             Timer = timer;
@@ -201,8 +200,8 @@ namespace MineGame
         /// <summary>
         /// Konstruktor för mina som rör sig i sidled
         /// </summary>
-        /// <param name="texture"></param>
-        /// <param name="position"></param>
+        /// <param name="texture">Minans textur</param>
+        /// <param name="position">Minans position</param>
         public SideMine(Texture2D texture, Vector2 position) : base(position, texture)
         {
 
@@ -216,8 +215,8 @@ namespace MineGame
         /// <summary>
         /// onstruktor för mina som rör sig i sidled åt andra hållet
         /// </summary>
-        /// <param name="texture"></param>
-        /// <param name="position"></param>
+        /// <param name="texture">Minans textur</param>
+        /// <param name="position">Minans position</param>
         public SideMine2(Texture2D texture, Vector2 position) : base(position, texture)
         {
 
@@ -231,8 +230,8 @@ namespace MineGame
         /// <summary>
         /// Konstruktor för minan som rör sig uppåt
         /// </summary>
-        /// <param name="texture"></param>
-        /// <param name="position"></param>
+        /// <param name="texture">Minans texur</param>
+        /// <param name="position">Minans position</param>
         public UpMine(Texture2D texture, Vector2 position) : base(position, texture)
         {
 
@@ -250,9 +249,9 @@ namespace MineGame
         /// <summary>
         /// Konstruktor för minan som studsar
         /// </summary>
-        /// <param name="texture"></param>
-        /// <param name="position"></param>
-        /// <param name="velocity"></param>
+        /// <param name="texture">Minans textur</param>
+        /// <param name="position">Minans position</param>
+        /// <param name="velocity">Studsande minans rörelse</param>
         public BounceMine(Texture2D texture, Vector2 position, Vector2 velocity) : base(position, texture)
         {
             BounceVelocity = velocity;
@@ -260,8 +259,8 @@ namespace MineGame
         /// <summary>
         /// Uppdaterar minans position och roterar vektorn om den är utanför spelplanen
         /// </summary>
-        /// <param name="screenWidth"></param>
-        /// <param name="screenHeight"></param>
+        /// <param name="screenWidth">Skärmens bredd</param>
+        /// <param name="screenHeight">Skermens höjd</param>
         public void BounceUpdate(int screenWidth, int screenHeight)
         {
             Position = new Vector2(Math.Clamp(Position.X, 0, 800 - Texture.Width), Math.Clamp(Position.Y, 0, 480 - Texture.Height));
@@ -282,9 +281,9 @@ namespace MineGame
         /// <summary>
         /// Konstruktor för blocket
         /// </summary>
-        /// <param name="texture"></param>
-        /// <param name="position"></param>
-        /// <param name="velocity"></param>
+        /// <param name="texture">Blockets textur</param>
+        /// <param name="position">Blockets position</param>
+        /// <param name="velocity">Blockets rörelse</param>
         public BigBlock(Texture2D texture, Vector2 position, Vector2 velocity) : base(position, texture)
         {
             Velocity = velocity;

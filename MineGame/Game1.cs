@@ -149,7 +149,7 @@ namespace MineGame
         /// <summary>
         /// Logik som körs varje frame
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="gameTime">Hur lång tid programmet har körts</param>
         protected override void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit(); //Stänger av spelet när man trycker på Escape
@@ -300,7 +300,7 @@ namespace MineGame
                 else if (mine is AdvancedMine)
                 {
                     AdvancedMine advmine = mine as AdvancedMine;
-                    advmine.AdvancedUpdate(player.GetPosX(), player.GetPosY(), difficulty);
+                    advmine.AdvancedUpdate(new Vector2(player.GetPosX(), player.GetPosY()), difficulty);
                 }
                 else if (mine is BounceMine)
                 {
@@ -424,7 +424,7 @@ namespace MineGame
         /// <summary>
         /// Ritat ut allt på spelplanen
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="gameTime">Tid som spelet har körts</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkKhaki);
@@ -506,8 +506,8 @@ namespace MineGame
         /// <summary>
         /// Något om kollision
         /// </summary>
-        /// <param name="r1"></param>
-        /// <param name="r2"></param>
+        /// <param name="r1">Rektangel runt objekt 1</param>
+        /// <param name="r2">Rektangel runt objekt 2</param>
         /// <returns>Returnerar en rektangel baserat på objektens position</returns>
         public static Rectangle Intersection(Rectangle r1, Rectangle r2)
         {
@@ -525,8 +525,8 @@ namespace MineGame
         /// <summary>
         /// Något om kollision
         /// </summary>
-        /// <param name="reference"></param>
-        /// <param name="overlap"></param>
+        /// <param name="reference">Referensrektangel</param>
+        /// <param name="overlap">Rektangel baserad på överlappningen</param>
         /// <returns>Returnerar en normalizerad rektangel</returns>
         public static Rectangle Normalize(Rectangle reference, Rectangle overlap)
         {
@@ -535,10 +535,10 @@ namespace MineGame
         /// <summary>
         /// Något om kollision
         /// </summary>
-        /// <param name="t1"></param>
-        /// <param name="r1"></param>
-        /// <param name="t2"></param>
-        /// <param name="r2"></param>
+        /// <param name="t1">Textur på objekt 1</param>
+        /// <param name="r1">Rektangel runt objekt 1</param>
+        /// <param name="t2">Textur på objekt 2</param>
+        /// <param name="r2">rektangel runt objekt 2</param>
         /// <returns>Returnerar en bool baserat på om objekten kolliderar på en pixelnivå</returns>
         public static bool TestCollision(Texture2D t1, Rectangle r1, Texture2D t2, Rectangle r2)
         {

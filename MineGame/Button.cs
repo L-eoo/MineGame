@@ -29,9 +29,9 @@ namespace MineGame
         /// <summary>
         /// Konstruktor för knappar
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="texture"></param>
-        /// <param name="difficulty"></param>
+        /// <param name="position">Vektor för position</param>
+        /// <param name="texture">Textur för objektet</param>
+        /// <param name="difficulty">Nya svårighetsgraden när knappen trycks på</param>
         public Button(Vector2 position, Texture2D texture, float difficulty)
         {
             Position = position;
@@ -40,7 +40,7 @@ namespace MineGame
         }/// <summary>
         /// Kollar om musen är ovanpå knappen
         /// </summary>
-        /// <param name="MouseInput"></param>
+        /// <param name="MouseInput">Information om musen</param>
         /// <returns>Returnerar en bool baserad på om musens position är på knapen</returns>
         public bool MouseOnButton(MouseState MouseInput)
         {
@@ -53,7 +53,7 @@ namespace MineGame
         /// <summary>
         /// Ritar knappen
         /// </summary>
-        /// <param name="spriteBatch"></param>
+        /// <param name="spriteBatch">Spritebatchen</param>
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, Position, Color.White);
