@@ -91,7 +91,7 @@ namespace MineGame
         /// Med hjälp av Keyboardstate skapas en vektor för spelarens rörelse
         /// </summary>
         /// <param name="keyboard">Info om knapparna på tangentbordet</param>
-        /// <returns>Returnerar en uppdaterad position</returns>
+        /// <returns>Returnerar spelarens rotation</returns>
         public double PlayerUpdate(KeyboardState keyboard)
         {
             double rotation = 0;
@@ -274,9 +274,9 @@ namespace MineGame
     /// </summary>
     class BigBlock : MovingObject
     {
-        /// <summary>
+        /// <value>
         /// Blockets rörelse
-        /// </summary>
+        /// </value>
         public Vector2 Velocity { get; set; }
         /// <summary>
         /// Konstruktor för blocket
