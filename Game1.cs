@@ -1,4 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿/// <summary>
+/// Namn: Leo Magnusson
+/// Klass: SU21
+/// Info:
+/// Huvudprogrammet för ett spel där man indviker minor
+/// </summary>
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -8,19 +15,20 @@ using System.Runtime.CompilerServices;
 
 namespace MineGame
 {
+    /// <summary>
+    /// Huvudklassen för programmet
+    /// </summary>
     public class Game1 : Game
     {
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch spriteBatch;
 
+        /// <value>
+        /// Texturer för programmet
+        /// </value>
         private Texture2D backgroundTexture;
         private Texture2D planeTexture;
-
         private Texture2D coinTexture;
-        private Vector2 coinPos;
-        private float difficulty;
-        private string difficultyText;
-
         private Texture2D regMineTexture;
         private Texture2D advMineTexture;
         private Texture2D statMineTexture;
@@ -29,42 +37,60 @@ namespace MineGame
         private Texture2D upMineTexture;
         private Texture2D blockTexture;
         private Texture2D bounceTexture;
-
         private Texture2D easyTexture;
         private Texture2D normalTexture;
         private Texture2D hardTexture;
 
+        /// <value>
+        /// Vektorer som används i programmet
+        /// </value>
         private Vector2 startPos;
         private Vector2 velocityPlayer;
+        private Vector2 coinPos;
 
+        /// <value>
+        /// Listor som används i programmet
+        /// </value>
         private List<MovingObject> mines;
         private List<BigBlock> blockList;
         private List<Button> buttonList;
 
+        /// <value>
+        /// Nummer som används i prorammet
+        /// </value>
+        private double rotation;
         private float regMineTimer;
         private float advMineTimer;
         private float statMineTimer;
-        private int gameScreenWidth;
-        private int gameScreenHeight;
-
-        private Random rnd;
-        private bool isPlaying;
-        private SpriteFont font;
         private float score;
         private float highscore;
         private float easyHighscore;
         private float normalHighscore;
         private float hardHighscore;
-        private double rotation;
+        private float difficulty;
+        private int gameScreenWidth;
+        private int gameScreenHeight;
 
+        /// <value>
+        /// Övriga variabler
+        /// </value>      
+        private bool isPlaying;
+        private string difficultyText;
         private Player player;
+        private SpriteFont font;
+        private Random rnd;
+        /// <summary>
+        /// Konstruktor för programmet
+        /// </summary>
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
-
+        /// <summary>
+        /// Ger variablernas startvärde
+        /// </summary>
         protected override void Initialize()
         {
             isPlaying = false;
@@ -90,7 +116,9 @@ namespace MineGame
 
             base.Initialize();
         }
-
+        /// <summary>
+        /// Laddar in alla texturer och fonter
+        /// </summary>
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -118,7 +146,10 @@ namespace MineGame
             buttonList.Add(new Button(new Vector2(50, 200), normalTexture, 2));
             buttonList.Add(new Button(new Vector2(50, 250), hardTexture, 3));
         }
-        // -----------------------------UPDATE------------------------------
+        /// <summary>
+        /// Logik som körs varje frame
+        /// </summary>
+        /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit(); //Stänger av spelet när man trycker på Escape
@@ -390,7 +421,10 @@ namespace MineGame
             base.Update(gameTime);
         }
 
-        // ------------------------------DRAW-------------------------------
+        /// <summary>
+        /// Ritat ut allt på spelplanen
+        /// </summary>
+        /// <param name="gameTime"></param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkKhaki);
@@ -399,7 +433,8 @@ namespace MineGame
             spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
 
             foreach (BigBlock block in blockList) block.Draw(spriteBatch, Color.White);
-            spriteBatch.Draw(planeTexture, new Rectangle((int)player.GetPosX() + planeTexture.Width / 2, (int)player.GetPosY() + planeTexture.Width / 2, planeTexture.Width, planeTexture.Height), null, Color.White, (float)rotation, new Vector2(planeTexture.Width / 2, planeTexture.Height / 2), SpriteEffects.None, 0f);
+            spriteBatch.Draw(planeTexture, new Rectangle((int)player.GetPosX() + planeTexture.Width / 2, (int)player.GetPosY() + planeTexture.Width / 2,
+                planeTexture.Width, planeTexture.Height), null, Color.White, (float)rotation, new Vector2(planeTexture.Width / 2, planeTexture.Height / 2), SpriteEffects.None, 0f);
             //Ritar planet med rotation
             foreach (MovingObject mine in mines)
             { 
@@ -427,7 +462,9 @@ namespace MineGame
             base.Draw(gameTime);
         }
 
-        // ------------------------------RESET------------------------------
+        /// <summary>
+        /// Återställer när man ska spela igen
+        /// </summary>
         void Reset()
         {
             isPlaying = true;
@@ -441,7 +478,9 @@ namespace MineGame
             statMineTimer = 1;
         }
 
-        // -----------------------------NEWCOIN-----------------------------
+        /// <summary>
+        /// Skapar en ny peng när man tar den förra
+        /// </summary>
         void Newcoin()
         {
             score++;
@@ -464,8 +503,13 @@ namespace MineGame
             coinPos = new Vector2(startPosX, startPosY); //ändrar pengens position till en slumpmässig plats på skärmen
         }
 
-        // ----------------------------COLLISION----------------------------
-        public static Rectangle Intersection(Rectangle r1, Rectangle r2) //Jag har ingen aning om vad som pågår
+        /// <summary>
+        /// Något om kollision
+        /// </summary>
+        /// <param name="r1"></param>
+        /// <param name="r2"></param>
+        /// <returns>Returnerar en rektangel baserat på objektens position</returns>
+        public static Rectangle Intersection(Rectangle r1, Rectangle r2)
         {
             int x1 = Math.Max(r1.Left, r2.Left);
             int y1 = Math.Max(r1.Top, r2.Top);
@@ -478,13 +522,25 @@ namespace MineGame
             }
             return Rectangle.Empty;
         }
-
-        public static Rectangle Normalize(Rectangle reference, Rectangle overlap) //Jag har ingen aning om vad som pågår
+        /// <summary>
+        /// Något om kollision
+        /// </summary>
+        /// <param name="reference"></param>
+        /// <param name="overlap"></param>
+        /// <returns>Returnerar en normalizerad rektangel</returns>
+        public static Rectangle Normalize(Rectangle reference, Rectangle overlap)
         {
             return new Rectangle(overlap.X - reference.X, overlap.Y - reference.Y, overlap.Width, overlap.Height);
         }
-
-        public static bool TestCollision(Texture2D t1, Rectangle r1, Texture2D t2, Rectangle r2) //Jag har ingen aning om vad som pågår
+        /// <summary>
+        /// Något om kollision
+        /// </summary>
+        /// <param name="t1"></param>
+        /// <param name="r1"></param>
+        /// <param name="t2"></param>
+        /// <param name="r2"></param>
+        /// <returns>Returnerar en bool baserat på om objekten kolliderar på en pixelnivå</returns>
+        public static bool TestCollision(Texture2D t1, Rectangle r1, Texture2D t2, Rectangle r2)
         {
             int pixelCount = r1.Width * r1.Height;
             uint[] texture1Pixels = new uint[pixelCount];
