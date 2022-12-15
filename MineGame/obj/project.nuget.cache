@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1mVgVep/8SzLhXAfHihN4Ks6/EJ2IG/hg88yTFC+Su86MZEuwPaOJeilQAjrg8Y6nQgUCqZCZL8DMIdwmmXmOA==",
+  "dgSpecHash": "MDbooOJpXgPhVEEMJZqmrfShakDZbhvcX1SzHteCwHLcrqHrQeHMLnNxu3gg3e3azq5Nwio5FOS8/U03JIMaCw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\leo.magnusson1\\source\\repos\\MineGame\\MineGame\\MineGame.csproj",
+  "projectFilePath": "C:\\Users\\leo.magnusson1\\source\\repos\\MineGame\\MineGame\\MineGame\\MineGame.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\leo.magnusson1\\.nuget\\packages\\monogame.content.builder.task\\3.8.1.303\\monogame.content.builder.task.3.8.1.303.nupkg.sha512",
     "C:\\Users\\leo.magnusson1\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.1.303\\monogame.framework.desktopgl.3.8.1.303.nupkg.sha512"
